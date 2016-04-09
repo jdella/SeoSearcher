@@ -1,0 +1,26 @@
+﻿@model SeoSearcher.Models.ViewModels.SeoSearchResultsViewModel
+
+@{
+    ViewBag.Title = "SeoSearch";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<p>
+    <h2>Rankings</h2>
+    @foreach (var ranking in Model.TargetUrlRankings)
+    {
+        <div>
+            @Html.DisplayFor(modelItem => ranking)
+        </div>
+    }
+    <h2>Results</h2>
+    @foreach (var result in Model.SearchResults)
+    {
+        <div>
+            @Html.DisplayFor(modelItem => result.Rank)
+            @Html.DisplayFor(modelItem => result.FullUrl)
+        </div>
+    }
+
+</p>
