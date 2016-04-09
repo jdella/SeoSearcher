@@ -17,7 +17,7 @@ namespace SeoSearcher.Controllers
         private SeoSearchDbContext db = new SeoSearchDbContext();
 
 
-        //todo pass params...string keywords, string targetUrl, int maxResults=100
+        ////todo pass params...string keywords, string targetUrl, int maxResults=100
         public async System.Threading.Tasks.Task<ActionResult> SeoSearch()
         {
             var targetUrl = "infotrack.com.au";
@@ -35,7 +35,18 @@ namespace SeoSearcher.Controllers
         // GET: SeoSearches
         public ActionResult Index()
         {
-            return View(db.SeoSearches.ToList());
+            var targetUrl = "infotrack.com.au";
+
+            var searchResults = SeoSearchService.GetSeoRankingsForUrl("GET FROM SOMEHWRE", "GET FROM SOMEHWRE");
+            var targetUrlRankings = SeoSearchService.GetTargetUrlRankings(targetUrl, searchResults);
+
+            return View(new SeoSearchResultsViewModel
+            {
+                SearchResults = searchResults,
+                TargetUrlRankings = targetUrlRankings
+            });
+
+            //return View(db.SeoSearches.ToList());
         }
 
         // GET: SeoSearches/Details/5

@@ -1,45 +1,26 @@
-﻿@model IEnumerable<SeoSearcher.Models.SeoSearch>
+﻿@model SeoSearcher.Models.ViewModels.SeoSearchResultsViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "SeoSearch";
 }
-
-<h2>Index</h2>
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <h2>Rankings</h2>
+    @foreach (var ranking in Model.TargetUrlRankings)
+    {
+        <div>
+            @Html.DisplayFor(modelItem => ranking)
+        </div>
+    }
+    <h2>Results</h2>
+    @foreach (var result in Model.SearchResults)
+    {
+        <div>
+            @Html.DisplayFor(modelItem => result.Rank)
+            @Html.DisplayFor(modelItem => result.FullUrl)
+        </div>
+    }
+
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.KeyWords)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TargetUrl)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateRun)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.KeyWords)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TargetUrl)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateRun)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
