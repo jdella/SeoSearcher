@@ -13,10 +13,10 @@ namespace SeoSearcher.Models
         [Required]
         public string KeyWords { get; set; }
         [Required]
+        // [Url] todo too restrictive - a good regex might be better here?
         public string TargetUrl { get; set; }
         [Required]
         public int MaxResults { get; set; }
-        public bool IsFavourite { get; set; }
         [Required]
         public DateTime DateRun { get; set; }
 

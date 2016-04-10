@@ -30,6 +30,8 @@ namespace SeoSearcher.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include = "NewSearch")] HomeViewModel viewModel)
         {
+
+
             if (ModelState.IsValid)
             {
                 return RedirectToAction("Index", "SeoSearch", viewModel.NewSearch);

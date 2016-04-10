@@ -16,14 +16,14 @@
     << Back
 </a>
 
-<h2>
+<h3>
     SEO keywords:
     <span class="text-primary">
         "@Model.SeoSearch.KeyWords"
     </span>
-</h2>
+</h3>
 
-<h2>
+<h3>
     Top
     @Model.SeoSearch.MaxResults
     rankings for
@@ -34,10 +34,10 @@
     <span class="text-nowrap">
         @Model.SeoSearch.DateRun.ToLongDateString()
     </span>
-</h2>
+</h3>
 @if (!Model.TargetUrlRankings.Any())
 {
-    <span class="col-md-2 text-danger h2">None!</span>
+    <span class="col-md-2 text-danger h3">None!</span>
 
 }
 else
@@ -46,7 +46,7 @@ else
 
         @foreach (var ranking in Model.TargetUrlRankings)
         {
-            <span class=" col-md-1 text-success h2">
+            <span class="col-md-1 text-success h3">
                 #@Html.DisplayFor(modelItem => ranking)
             </span>
         }

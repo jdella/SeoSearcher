@@ -19,8 +19,8 @@ namespace SeoSearcher.Tests.Controllers
     {
         private SeoSearch _default = new SeoSearch
         {
-            TargetUrl = "newurl.com.au",
-            KeyWords = "new key words"
+            TargetUrl = "www.infotrack.com.au",
+            KeyWords = "online title search"
         };
 
         // simple test to make sure ModelState is validating
@@ -47,7 +47,7 @@ namespace SeoSearcher.Tests.Controllers
         {
             SeoSearch _default = new SeoSearch
             {
-                TargetUrl = "newurl.com.au",
+                TargetUrl = "http://www.newurl.com.au",
                 KeyWords = "new key words"
             };
             var controller = new SeoSearchController();
@@ -70,6 +70,7 @@ namespace SeoSearcher.Tests.Controllers
             );
 
         // make sure config settings exist
+        // *NOTE these will be pulled in Test > App.config
         [TestMethod]
         public void AppConfigSettings()
         {
