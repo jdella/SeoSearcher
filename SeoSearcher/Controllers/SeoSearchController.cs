@@ -40,6 +40,12 @@ namespace SeoSearcher.Controllers
 
         public ActionResult FavSearch()
         {
+            if (_db.FavSearches.Any())
+            {
+                var fav = _db.FavSearches.First();
+                return RedirectToAction("Index", "SeoSearch",fav);
+            }
+
             return RedirectToAction("Index", "SeoSearch", new SeoSearch
             {
                 TargetUrl = "infotrack.com.au",
@@ -49,7 +55,7 @@ namespace SeoSearcher.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveFavourite([Bind(Include = "KeyWords,TargetUrl")] FavSearch newFav)
+        public ActionResult SaveFavourite([Bind(Include = "Id, KeyWords,TargetUrl")] FavSearch newFav)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +75,7 @@ namespace SeoSearcher.Controllers
                 }
                 _db.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index",newFav);
         }
 
         //////todo pass params...string keywords, string targetUrl, int maxResults=100

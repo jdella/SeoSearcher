@@ -38,6 +38,15 @@ namespace SeoSearcher.Controllers
             return View(seoSearch);
         }
 
+        public ActionResult FavSearch()
+        {
+            return RedirectToAction("Index", "SeoSearch", new SeoSearch
+            {
+                TargetUrl = "infotrack.com.au",
+                KeyWords = "online title search"
+            });
+        }
+
         //public ActionResult SeoSearch()
         //{
         //    ViewBag.Message = "Your application description page.";
@@ -49,7 +58,7 @@ namespace SeoSearcher.Controllers
         //public async System.Threading.Tasks.Task<ActionResult> SeoSearch()
         //{
         //    var targetUrl = "infotrack.com.au";
-            
+
         //    var searchResults = SeoSearchService.GetSeoSearchRankings("GET FROM SOMEHWRE", "GET FROM SOMEHWRE");
         //    var targetUrlRankings = SeoSearchService.GetTargetUrlRankings(targetUrl, searchResults);
 
