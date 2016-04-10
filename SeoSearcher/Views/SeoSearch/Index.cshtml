@@ -1,26 +1,97 @@
-﻿@model SeoSearcher.Models.ViewModels.SeoSearchResultsViewModel
-
+﻿@using System.Data.Entity.ModelConfiguration.Conventions
+@using System.Diagnostics.Eventing.Reader
+@using SeoSearcher.Models
+@model SeoSearcher.Models.ViewModels.SeoSearchResultsViewModel
 @{
     ViewBag.Title = "SeoSearch";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+@*<h2>@ViewBag.Title.</h2>
+    <h3>@ViewBag.Message</h3>*@
 
-<p>
-    <h2>Rankings</h2>
-    @foreach (var ranking in Model.TargetUrlRankings)
-    {
-        <div>
-            @Html.DisplayFor(modelItem => ranking)
-        </div>
+<style>
+    .primay-color {
+        color: blue;
     }
-    <h2>Results</h2>
-    @foreach (var result in Model.SearchResults)
-    {
-        <div>
-            @Html.DisplayFor(modelItem => result.Rank)
-            @Html.DisplayFor(modelItem => result.FullUrl)
-        </div>
-    }
+</style>
 
-</p>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="pull-right">
+            @Html.ActionLink("Make Favourite", "SaveFavourite", "SeoSearch", new FavSearch
+            {
+                KeyWords = Model.SeoSearch.KeyWords,
+                TargetUrl = Model.SeoSearch.TargetUrl
+            },
+            new { @class = "btn btn-warning btn-md" })
+        <button class="btn btn-info btn-md">
+            Save Search
+        </button>
+    </div>
+}
+
+<h2>
+    SEO keywords:
+    <span class="text-primary">
+        "@Model.SeoSearch.KeyWords"
+    </span>
+</h2>
+
+<h2>
+    Top
+    @Model.SeoSearch.MaxResults
+    rankings for
+    <span class="text-primary">
+        @Model.SeoSearch.TargetUrl
+    </span>
+    as of
+    <span class="text-nowrap">
+        @Model.SeoSearch.DateRun.ToLongDateString()
+    </span>
+</h2>
+@if (!Model.TargetUrlRankings.Any())
+{
+    <span class="col-md-2 text-danger h2">None!</span>
+
+}
+else
+{
+    <div class="row">
+
+        @foreach (var ranking in Model.TargetUrlRankings)
+        {
+            <span class=" col-md-1 text-success h2">
+                #@Html.DisplayFor(modelItem => ranking)
+            </span>
+        }
+    </div>
+    <hr />
+    <button class="btn btn-primary btn-md col-md-12 clearfix" data-toggle="collapse" data-target="#FullResults">
+        Toggle Full Results
+    </button>
+
+    <div id="FullResults" class="collapse clearfix">
+        <table class="table-striped table-hover col-md-12">
+
+            @foreach (var result in Model.SearchResults.OrderBy(x => x.Rank))
+            {
+                <tr class="full-results">
+                    <td class="col-md-1 lead">
+                        @Html.DisplayFor(modelItem => result.Rank)
+                    </td>
+                    <td class="col-md-11">
+                        <a href="@result.FullUrl">@result.FullUrl</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+}
+
+
+
+
+
+
+</div>

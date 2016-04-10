@@ -15,9 +15,19 @@ namespace SeoSearcher.Models
         [Required]
         public string TargetUrl { get; set; }
         [Required]
+        public int MaxResults { get; set; }
+        public bool IsFavourite { get; set; }
+        [Required]
         public DateTime DateRun { get; set; }
 
-        public virtual ICollection<SeoSearchResult> SeoSearchResults { get; set; } 
+        public virtual ICollection<SeoSearchResult> SeoSearchResults { get; set; }
+
+
+        public SeoSearch()
+        {   //defaults
+            DateRun = DateTime.Now;
+            MaxResults = 100;
+        }
     }
 
 }

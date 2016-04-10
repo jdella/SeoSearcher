@@ -2,25 +2,7 @@
 @{
     ViewBag.Title = "Home Page";
 }
-<div class="jumbotron">
-    <div class="row">
-        <div class="col-md-6">
-            <h1 class="">
-                SeoSearcher
-            </h1>
-            <a href="@Url.Action("Index", "SeoSearch")" class="btn btn-primary btn-lg">
-                @*@Html.ActionLink("Favourite", "SeoSearch", "SeoSearch")"*@
-                Run favorite Seo Search
-                &raquo;
-            </a>
-        </div>
-        <div class="col-md-6">
 
-        </div>
-
-
-    </div>
-</div>
 <div class="row">
     <div class="col-md-12">
         @using (Html.BeginForm())
@@ -41,24 +23,16 @@
 
                 <div class="form-group">
                     <label for="targetUrl" class="control-label">Target URL</label>
-                    @*@Html.LabelFor(model => model.TargetUrl, htmlAttributes: new { @class = "control-label col-md-2" })*@
                     <div class="" id="targetUrl">
                         @Html.EditorFor(model => model.TargetUrl, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.TargetUrl, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                @*<div class="form-group">
-                        @Html.LabelFor(model => model.DateRun, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.DateRun, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.DateRun, "", new { @class = "text-danger" })
-                        </div>
-                    </div>*@
-
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-default" />
+                    <label class="control-label">&nbsp;</label>
+                    <div class="">
+                        <input type="submit" value="Search" class="btn btn-default"/>
                     </div>
                 </div>
             </div>

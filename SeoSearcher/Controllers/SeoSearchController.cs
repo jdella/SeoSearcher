@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using SeoSearcher.App_Start;
 using SeoSearcher.Models;
 using SeoSearcher.Models.ViewModels;
 using SeoSearcher.Services.SeoSearch;
@@ -14,40 +15,79 @@ namespace SeoSearcher.Controllers
 {
     public class SeoSearchController : Controller
     {
-        private SeoSearchDbContext db = new SeoSearchDbContext();
-
-
-        ////todo pass params...string keywords, string targetUrl, int maxResults=100
-        public async System.Threading.Tasks.Task<ActionResult> SeoSearch()
-        {
-            var targetUrl = "infotrack.com.au";
-
-            var searchResults = SeoSearchService.GetSeoRankingsForUrl("GET FROM SOMEHWRE", "GET FROM SOMEHWRE");
-            var targetUrlRankings = SeoSearchService.GetTargetUrlRankings(targetUrl, searchResults);
-
-            return View(new SeoSearchResultsViewModel
-            {
-                SearchResults = searchResults,
-                TargetUrlRankings = targetUrlRankings
-            });
-        }
+        private readonly SeoSearchDbContext _db = new SeoSearchDbContext();
+        private readonly SeoSearchService _seoSearchService = new SeoSearchService(
+            AppConfig.GoogleSearchResultIdentifier,
+            AppConfig.GoogleResultUrlRegex,
+            AppConfig.GoogleMaxSearchResults
+            );
 
         // GET: SeoSearches
-        public ActionResult Index()
+        public ActionResult Index(SeoSearch seoSearch)
         {
-            var targetUrl = "infotrack.com.au";
+            //var targetUrl = "infotrack.com.au";
 
-            var searchResults = SeoSearchService.GetSeoRankingsForUrl("GET FROM SOMEHWRE", "GET FROM SOMEHWRE");
-            var targetUrlRankings = SeoSearchService.GetTargetUrlRankings(targetUrl, searchResults);
+            var searchResults = _seoSearchService.GetSeoSearchRankings(seoSearch);
+            var targetUrlRankings = _seoSearchService.GetTargetUrlRankings(seoSearch.TargetUrl, searchResults);
 
             return View(new SeoSearchResultsViewModel
             {
+                SeoSearch = seoSearch,
                 SearchResults = searchResults,
                 TargetUrlRankings = targetUrlRankings
             });
-
-            //return View(db.SeoSearches.ToList());
         }
+
+        public ActionResult FavSearch()
+        {
+            return RedirectToAction("Index", "SeoSearch", new SeoSearch
+            {
+                TargetUrl = "infotrack.com.au",
+                KeyWords = "online title search"
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveFavourite([Bind(Include = "KeyWords,TargetUrl")] FavSearch newFav)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_db.FavSearches.Any())
+                {
+                    var fav = _db.FavSearches.First();
+                    fav.KeyWords = newFav.KeyWords;
+                    fav.TargetUrl = newFav.TargetUrl;
+                }
+                else
+                {
+                    _db.FavSearches.Add(new FavSearch
+                    {
+                        KeyWords = newFav.KeyWords,
+                        TargetUrl = newFav.TargetUrl
+                    });
+                }
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+
+        //////todo pass params...string keywords, string targetUrl, int maxResults=100
+        //public async System.Threading.Tasks.Task<ActionResult> SeoSearch()
+        //{
+        //    var targetUrl = "infotrack.com.au";
+
+        //    var searchResults = SeoSearchService.GetSeoSearchRankings("GET FROM SOMEHWRE", "GET FROM SOMEHWRE");
+        //    var targetUrlRankings = SeoSearchService.GetTargetUrlRankings(targetUrl, searchResults);
+
+        //    return View(new SeoSearchResultsViewModel
+        //    {
+        //        SearchResults = searchResults,
+        //        TargetUrlRankings = targetUrlRankings
+        //    });
+        //}
+
+
 
         // GET: SeoSearches/Details/5
         public ActionResult Details(int? id)
@@ -56,7 +96,7 @@ namespace SeoSearcher.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SeoSearch seoSearch = db.SeoSearches.Find(id);
+            SeoSearch seoSearch = _db.SeoSearches.Find(id);
             if (seoSearch == null)
             {
                 return HttpNotFound();
@@ -64,7 +104,7 @@ namespace SeoSearcher.Controllers
             return View(seoSearch);
         }
 
-        // GET: SeoSearches/Create
+        //// GET: SeoSearches/Create
         public ActionResult Create()
         {
             return View();
@@ -79,8 +119,8 @@ namespace SeoSearcher.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.SeoSearches.Add(seoSearch);
-                db.SaveChanges();
+                _db.SeoSearches.Add(seoSearch);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -94,7 +134,7 @@ namespace SeoSearcher.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SeoSearch seoSearch = db.SeoSearches.Find(id);
+            SeoSearch seoSearch = _db.SeoSearches.Find(id);
             if (seoSearch == null)
             {
                 return HttpNotFound();
@@ -111,8 +151,8 @@ namespace SeoSearcher.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(seoSearch).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(seoSearch).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(seoSearch);
@@ -125,7 +165,7 @@ namespace SeoSearcher.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SeoSearch seoSearch = db.SeoSearches.Find(id);
+            SeoSearch seoSearch = _db.SeoSearches.Find(id);
             if (seoSearch == null)
             {
                 return HttpNotFound();
@@ -138,9 +178,9 @@ namespace SeoSearcher.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SeoSearch seoSearch = db.SeoSearches.Find(id);
-            db.SeoSearches.Remove(seoSearch);
-            db.SaveChanges();
+            SeoSearch seoSearch = _db.SeoSearches.Find(id);
+            _db.SeoSearches.Remove(seoSearch);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -148,7 +188,7 @@ namespace SeoSearcher.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

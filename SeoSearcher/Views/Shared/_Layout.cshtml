@@ -1,37 +1,65 @@
-﻿<!DOCTYPE html>
+﻿@using SeoSearcher.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - SeoSearcher</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        a.no-link-decoration {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar">x</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Seo Search", "Index", "SeoSearch")</li>
+                    </ul>
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Seo Search", "Index", "SeoSearch")</li>
-                </ul>
+        </div>*@
+
+    <div class="jumbotron">
+        <div class="container body-content ">
+            <div class="">
+                <h1>
+                    <a href="@Url.Action("Index", "Home")" class="no-link-decoration">
+                        SeoSearcher
+                    </a>
+                </h1>
+                <a class="btn btn-primary btn-lg" href="@Url.Action("FavSearch", "SeoSearch")">
+                    @*@Html.ActionLink("Favourite", "SeoSearch", "SeoSearch")"*@
+                    <span class="lead">Run favorite Seo Search &raquo;</span>
+
+                </a>
             </div>
+            @*<div class="col-md-6">
+                </div>*@
+
         </div>
     </div>
+
     <div class="container body-content">
+
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
