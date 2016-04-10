@@ -26,13 +26,13 @@ namespace SeoSearcher.Services.SeoSearch
         }
 
         /// <summary>
-        /// Parses Google search results for provided keywords and returns ranked results 
+        /// Gets Google search results for provided keywords
         /// </summary>
         /// <param name="keywords">Keywords to search</param>
-        /// <returns></returns>
-        public async Task<List<SeoSearchResult>> GetSeoSearchRankings(string keywords)
+        /// <returns>Google search request response</returns>
+        public async Task<string> GetSeoSearchResultsResponse(string keywords)
         {
-            var seoRankings = new List<SeoSearchResult>();
+           // var seoRankings = new List<SeoSearchResult>();
 
             var url = String.Format("https://www.google.com.au/search?num={0}&q={1}", MaxResults, keywords);
 
@@ -43,11 +43,10 @@ namespace SeoSearcher.Services.SeoSearch
                 if (response.IsSuccessStatusCode)
                 {
                     var searchResultsHtml = response.Content.ReadAsStringAsync().Result;
-                    seoRankings = ScrapeSearchResults(searchResultsHtml);
+                    return searchResultsHtml;
                 }
+                return null;
             }
-
-            return seoRankings;
         }
 
         /// <summary>
@@ -57,7 +56,7 @@ namespace SeoSearcher.Services.SeoSearch
         /// <returns>
         /// Ranked list of search result URLs (Rank & URL)
         /// </returns>
-        private List<SeoSearchResult> ScrapeSearchResults(string searchResultsHtml)
+        public List<SeoSearchResult> ScrapeSearchResults(string searchResultsHtml)
         {
             var seoSearchResultRankings = new List<SeoSearchResult>();
 

@@ -30,7 +30,8 @@ namespace SeoSearcher.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            seoSearch.Results = await _seoSearchService.GetSeoSearchRankings(seoSearch.KeyWords);
+            var response = await _seoSearchService.GetSeoSearchResultsResponse(seoSearch.KeyWords);
+            seoSearch.Results = _seoSearchService.ScrapeSearchResults(response);
             seoSearch.MaxResults = AppConfig.GoogleMaxSearchResults;
 
             var targetUrlRankings = _seoSearchService.GetTargetUrlRankings(seoSearch.TargetUrl, seoSearch.Results);
