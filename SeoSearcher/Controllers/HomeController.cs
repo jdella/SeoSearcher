@@ -4,19 +4,37 @@ using System.IO.Ports;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SeoSearcher.DAL.Managers;
 using SeoSearcher.Models;
 using SeoSearcher.Models.ViewModels;
 using SeoSearcher.Services.SeoSearch;
 
 namespace SeoSearcher.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private SeoSearchDbContext db = new SeoSearchDbContext();
+       // private SeoSearchDbContext db = new SeoSearchDbContext();
+
+        //public HomeController()
+        //{
+        //    ViewData["FavSearch"] = new SeoSearchDataManager().GetFavSearch();
+        //}
+        
 
         public ActionResult Index()
         {
-            return View();
+            var fav = new SeoSearchDataManager().GetFavSearch();
+            var defaultSearch = new SeoSearch
+            {
+                TargetUrl = "infotrack.com.au",
+                KeyWords = "online title search"
+            };
+
+            return View(new HomeViewModel
+            {
+                NewSearch = defaultSearch,
+                FavSearch = fav
+            });
         }
 
         // POST: SeoSearches/Create
@@ -24,7 +42,7 @@ namespace SeoSearcher.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index([Bind(Include = "Id,KeyWords,TargetUrl,DateRun")] SeoSearch seoSearch)
+        public ActionResult Index([Bind(Include = "NewSearch, FavSearch")] HomeViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -32,10 +50,10 @@ namespace SeoSearcher.Controllers
 
                 //db.SeoSearches.Add(seoSearch);
                 //db.SaveChanges();
-                return RedirectToAction("Index", "SeoSearch", seoSearch);
+                return RedirectToAction("Index", "SeoSearch", viewModel.NewSearch);
             }
 
-            return View(seoSearch);
+            return View(viewModel);
         }
 
         public ActionResult FavSearch()

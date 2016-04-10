@@ -19,28 +19,33 @@
     @Html.AntiForgeryToken()
     <div class="pull-right">
 
-        <input type="submit" value="SaveFavourite" class="btn btn-default" formaction="post" />
+        <span class="pull-right">
+            @using (Html.BeginForm("SaveFavourite", "SeoSearch", Model.SeoSearch))
+            {
+                @Html.AntiForgeryToken()
 
-        @*@Html.ActionLink("Make Favourite", "SaveFavourite", "SeoSearch", new FavSearch
-        {
-            KeyWords = Model.SeoSearch.KeyWords,
-            TargetUrl = Model.SeoSearch.TargetUrl
-        },
-            new {@class = "btn btn-warning btn-md"})*@
-        <button class="btn btn-info btn-md">
-            Save Search
-        </button>
+                @Html.HiddenFor(m => Model.SeoSearch.KeyWords)
+                @Html.HiddenFor(m => Model.SeoSearch.TargetUrl)
+                <input type="submit" value="Make Favourite" class="btn btn-warning btn-md" formaction="post" />
+            }
+        </span>
+        <span class="pull-right">&nbsp;</span>
+        <span class="pull-right">
+            @using (Html.BeginForm("SaveResults", "SeoSearch", Model.SeoSearch))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(m => Model.SeoSearch.Results)
+                @*<input type="submit" value="Match" />*@
+                <input type="submit" value="Save Results" class="btn btn-primary btn-md btn " formaction="post" />
+
+            }
+        </span>
+
     </div>
 }
 
-@using (Html.BeginForm("SaveFavourite", "SeoSearch",Model.SeoSearch))
-{
-    @Html.AntiForgeryToken()
 
-    @Html.HiddenFor(m => Model.SeoSearch.KeyWords)
-    @Html.HiddenFor(m => Model.SeoSearch.TargetUrl)
-    <input type="submit" value="Match" />
-}
 
 <h2>
     SEO keywords:
@@ -85,7 +90,7 @@ else
     <div id="FullResults" class="collapse clearfix">
         <table class="table-striped table-hover col-md-12">
 
-            @foreach (var result in Model.SearchResults.OrderBy(x => x.Rank))
+            @foreach (var result in Model.SeoSearch.Results.OrderBy(x => x.Rank))
             {
                 <tr class="full-results">
                     <td class="col-md-1 lead">

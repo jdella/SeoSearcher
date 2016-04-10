@@ -20,7 +20,7 @@ namespace SeoSearcher.Models
         [Required]
         public DateTime DateRun { get; set; }
 
-        public virtual ICollection<SeoSearchResult> SeoSearchResults { get; set; }
+        public virtual ICollection<SeoSearchResult> Results { get; set; }
 
 
         public SeoSearch()

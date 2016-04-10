@@ -1,0 +1,19 @@
+﻿@model SeoSearcher.Models.SeoSearch
+
+
+<div id="FullResults" class="collapse clearfix">
+    <table class="table-striped table-hover col-md-12">
+
+        @foreach (var result in Model.Results.OrderBy(x => x.Rank))
+            {
+            <tr class="full-results">
+                <td class="col-md-1 lead">
+                    @Html.DisplayFor(modelItem => result.Rank)
+                </td>
+                <td class="col-md-11">
+                    <a href="@result.FullUrl">@result.FullUrl</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

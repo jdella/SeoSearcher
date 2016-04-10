@@ -25,7 +25,7 @@ namespace SeoSearcher.Services.SeoSearch
             MaxResults = maxResults;
         }
 
-        public List<int> GetTargetUrlRankings(string targetUrl, List<SeoSearchResult> searchResults)
+        public List<int> GetTargetUrlRankings(string targetUrl, ICollection<SeoSearchResult> searchResults)
         {
             var rankings = new List<int>();
             if (!string.IsNullOrWhiteSpace(targetUrl))

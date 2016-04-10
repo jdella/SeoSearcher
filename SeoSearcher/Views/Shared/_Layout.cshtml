@@ -1,4 +1,9 @@
-﻿@using SeoSearcher.Models
+﻿@using SeoSearcher.DAL.Managers
+@using SeoSearcher.Models
+@{
+    var favSearch = (FavSearch)ViewData["FavSearch"];
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - SeoSearcher</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/modernizr")*@
 
     <style>
         a.no-link-decoration {
@@ -16,51 +21,43 @@
     </style>
 
 </head>
-<body>
+<body class="">
 
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar">x</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Seo Search", "Index", "SeoSearch")</li>
-                    </ul>
+    @*<h1>@favSearch.KeyWords</h1>*@
+
+
+    @*<div class="navbar navbar-inverse navbar-fixed-top clearfix">
+            <div class="container clearfix">
+                <div class="navbar-header clearfix">
+                        <a href="@Url.Action("Index", "Home")" class="navbar-brand ">
+                            SeoSearcher
+                        </a>
                 </div>
             </div>
         </div>*@
 
-    <div class="jumbotron">
+    <div class="jumbotron ">
         <div class="container body-content ">
-            <div class="">
-                <h1>
-                    <a href="@Url.Action("Index", "Home")" class="no-link-decoration">
-                        SeoSearcher
-                    </a>
-                </h1>
-                <a class="btn btn-primary btn-lg" href="@Url.Action("FavSearch", "SeoSearch")">
-                    @*@Html.ActionLink("Favourite", "SeoSearch", "SeoSearch")"*@
-                    <span class="lead">Run favorite Seo Search &raquo;</span>
-
+            <h1>
+                <a href="@Url.Action("Index", "Home")" class="h1 no-link-decoration">
+                    SeoSearcher
                 </a>
-            </div>
-            @*<div class="col-md-6">
-                </div>*@
+            </h1>
 
+            <a class="btn btn-primary btn-md" href="@Url.Action("FavSearch", "SeoSearch")"
+               title="''@favSearch.KeyWords'' | @favSearch.TargetUrl">
+                <span class="lead">Run favorite Seo Search &raquo;</span>
+            </a>
         </div>
     </div>
 
     <div class="container body-content">
-
         @RenderBody()
     </div>
+
+
+
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

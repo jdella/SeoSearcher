@@ -121,8 +121,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SeoSearchController.cs" />
+    <Compile Include="DAL\Managers\SeoSearchDataManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -130,6 +132,7 @@
     <Compile Include="Models\SeoSearch.cs" />
     <Compile Include="Models\SeoSearchDbContext.cs" />
     <Compile Include="Models\SeoSearchResult.cs" />
+    <Compile Include="Models\ViewModels\HomeViewModel.cs" />
     <Compile Include="Models\ViewModels\SeoSearchResultsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SeoSearch\SeoSearchService.cs" />
@@ -184,9 +187,11 @@
     <Content Include="Views\SeoSearch\Edit.cshtml" />
     <Content Include="Views\SeoSearch\IndexOld.cshtml" />
     <Content Include="Views\SeoSearch\Index.cshtml" />
+    <Content Include="Views\Home\_Results.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

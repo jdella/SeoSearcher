@@ -13,7 +13,7 @@ using SeoSearcher.Services.SeoSearch;
 
 namespace SeoSearcher.Controllers
 {
-    public class SeoSearchController : Controller
+    public class SeoSearchController : BaseController
     {
         private readonly SeoSearchDbContext _db = new SeoSearchDbContext();
         private readonly SeoSearchService _seoSearchService = new SeoSearchService(
@@ -25,15 +25,16 @@ namespace SeoSearcher.Controllers
         // GET: SeoSearches
         public ActionResult Index(SeoSearch seoSearch)
         {
-            //var targetUrl = "infotrack.com.au";
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            var searchResults = _seoSearchService.GetSeoSearchRankings(seoSearch);
-            var targetUrlRankings = _seoSearchService.GetTargetUrlRankings(seoSearch.TargetUrl, searchResults);
-
+            seoSearch.Results = _seoSearchService.GetSeoSearchRankings(seoSearch);
+            var targetUrlRankings = _seoSearchService.GetTargetUrlRankings(seoSearch.TargetUrl, seoSearch.Results);
             return View(new SeoSearchResultsViewModel
             {
                 SeoSearch = seoSearch,
-                SearchResults = searchResults,
                 TargetUrlRankings = targetUrlRankings
             });
         }
@@ -51,6 +52,32 @@ namespace SeoSearcher.Controllers
                 TargetUrl = "infotrack.com.au",
                 KeyWords = "online title search"
             });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveResults([Bind(Include = "Id, KeyWords,TargetUrl")] SeoSearch seoSearch)
+        {
+            return RedirectToAction("Index");
+//            if (ModelState.IsValid)
+//            {
+//                if (_db.FavSearches.Any())
+//                {
+//                    var fav = _db.FavSearches.First();
+//                    fav.KeyWords = newFav.KeyWords;
+//                    fav.TargetUrl = newFav.TargetUrl;
+//                }
+//                else
+//                {
+//                    _db.FavSearches.Add(new FavSearch
+//                    {
+//                        KeyWords = newFav.KeyWords,
+//                        TargetUrl = newFav.TargetUrl
+//                    });
+//                }
+//                _db.SaveChanges();
+//            }
+//            return RedirectToAction("Index", newFav);
         }
 
         [HttpPost]

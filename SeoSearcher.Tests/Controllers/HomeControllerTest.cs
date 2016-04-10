@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeoSearcher;
 using SeoSearcher.Controllers;
 using SeoSearcher.Models;
+using SeoSearcher.Models.ViewModels;
 
 namespace SeoSearcher.Tests.Controllers
 {
@@ -20,7 +21,7 @@ namespace SeoSearcher.Tests.Controllers
             HomeController controller = new HomeController();
 
             // Act
-            ViewResult result = controller.Index(new SeoSearch()) as ViewResult;
+            ViewResult result = controller.Index(new HomeViewModel()) as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
