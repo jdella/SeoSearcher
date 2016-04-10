@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SeoSearcher.App_Start;
+using SeoSearcher.DAL;
 using SeoSearcher.Models;
 using SeoSearcher.Models.ViewModels;
 using SeoSearcher.Services.SeoSearch;
@@ -35,6 +36,16 @@ namespace SeoSearcher.Controllers
                 SeoSearch = seoSearch,
                 SearchResults = searchResults,
                 TargetUrlRankings = targetUrlRankings
+            });
+        }
+
+        public ActionResult RunFavourite()
+        {
+            var fav = new SeoSearchDataManager().GetFavouriteSearch();
+            return RedirectToAction("Index", "SeoSearch", new SeoSearch
+            {
+                TargetUrl = "infotrack.com.au",
+                KeyWords = "online title search"
             });
         }
 
@@ -117,6 +128,7 @@ namespace SeoSearcher.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,KeyWords,TargetUrl,DateRun")] SeoSearch seoSearch)
         {
+
             if (ModelState.IsValid)
             {
                 _db.SeoSearches.Add(seoSearch);

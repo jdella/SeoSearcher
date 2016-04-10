@@ -5,27 +5,28 @@
 
 <div class="row">
     <div class="col-md-12">
+        
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
             <div class="form-inline">
                 <h4>Perform new SEO Search</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <hr/>
+                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
                 <div class="form-group">
-                    @Html.LabelFor(model => model.KeyWords, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.KeyWords, htmlAttributes: new {@class = "control-label "})
                     <div class="">
-                        @Html.EditorFor(model => model.KeyWords, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.KeyWords, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.KeyWords, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.KeyWords, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="targetUrl" class="control-label">Target URL</label>
                     <div class="" id="targetUrl">
-                        @Html.EditorFor(model => model.TargetUrl, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.TargetUrl, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.TargetUrl, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.TargetUrl, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
