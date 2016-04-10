@@ -1,8 +1,5 @@
 ﻿@using SeoSearcher.DAL.Managers
 @using SeoSearcher.Models
-@{
-    var favSearch = (FavSearch)ViewData["FavSearch"];
-}
 
 <!DOCTYPE html>
 <html>
@@ -11,31 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - SeoSearcher</title>
     @Styles.Render("~/Content/css")
-    @*@Scripts.Render("~/bundles/modernizr")*@
-
-    <style>
-        a.no-link-decoration {
-            text-decoration: none;
-            color: inherit;
-        }
-    </style>
+    @Scripts.Render("~/bundles/modernizr")
 
 </head>
 <body class="">
-
-    @*<h1>@favSearch.KeyWords</h1>*@
-
-
-    @*<div class="navbar navbar-inverse navbar-fixed-top clearfix">
-            <div class="container clearfix">
-                <div class="navbar-header clearfix">
-                        <a href="@Url.Action("Index", "Home")" class="navbar-brand ">
-                            SeoSearcher
-                        </a>
-                </div>
-            </div>
-        </div>*@
-
     <div class="jumbotron ">
         <div class="container body-content ">
             <h1>
@@ -43,20 +19,12 @@
                     SeoSearcher
                 </a>
             </h1>
-
-            <a class="btn btn-primary btn-md" href="@Url.Action("FavSearch", "SeoSearch")"
-               title="''@favSearch.KeyWords'' | @favSearch.TargetUrl">
-                <span class="lead">Run favorite Seo Search &raquo;</span>
-            </a>
         </div>
     </div>
 
     <div class="container body-content">
         @RenderBody()
     </div>
-
-
-
 
 
     @Scripts.Render("~/bundles/jquery")

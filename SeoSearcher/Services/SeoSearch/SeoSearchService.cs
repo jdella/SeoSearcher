@@ -25,6 +25,80 @@ namespace SeoSearcher.Services.SeoSearch
             MaxResults = maxResults;
         }
 
+        /// <summary>
+        /// Parses Google search results for provided keywords and returns ranked results 
+        /// </summary>
+        /// <param name="keywords">Keywords to search</param>
+        /// <returns></returns>
+        public async Task<List<SeoSearchResult>> GetSeoSearchRankings(string keywords)
+        {
+            var seoRankings = new List<SeoSearchResult>();
+
+            var url = String.Format("https://www.google.com.au/search?num={0}&q={1}", MaxResults, keywords);
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                var response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var searchResultsHtml = response.Content.ReadAsStringAsync().Result;
+                    seoRankings = ScrapeSearchResults(searchResultsHtml);
+                }
+            }
+
+            return seoRankings;
+        }
+
+        /// <summary>
+        /// Takes Google search results response HTML and returns ranked list of results
+        /// </summary>
+        /// <param name="searchResultsHtml">Html response for Google search request</param>
+        /// <returns>
+        /// Ranked list of search result URLs (Rank & URL)
+        /// </returns>
+        private List<SeoSearchResult> ScrapeSearchResults(string searchResultsHtml)
+        {
+            var seoSearchResultRankings = new List<SeoSearchResult>();
+
+            var searchResultSeperator = new string[] { GoogleSearchResultIdentifier };
+            var splitResults = searchResultsHtml.Split(searchResultSeperator, StringSplitOptions.RemoveEmptyEntries)
+                .Skip(1).ToArray();   // Skip first element as not a search result
+
+            var rank = 1;
+            for (var i = 0; i < splitResults.Count() + 1; i++)
+            {
+                try
+                {
+                    var regexResults = Regex.Matches(splitResults[i], GoogleResultUrlRegex);
+
+                    if (regexResults.Count > 0)
+                    {
+                        var searchResult = new SeoSearchResult
+                        {
+                            Rank = rank,
+                            FullUrl = regexResults[0].Groups[1].ToString()
+                        };
+                        seoSearchResultRankings.Add(searchResult);
+                        rank++;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+                    break;  // do not continue if somehow hit out of bounds
+                }
+            }
+
+            return seoSearchResultRankings;
+        }
+
+        /// <summary>
+        /// Processes a list of scraped Google results and returns list of rankings matching
+        /// provided target URL
+        /// </summary>
+        /// <param name="targetUrl">URL to search for in rankings</param>
+        /// <param name="searchResults">List of scraped search results</param>
+        /// <returns></returns>
         public List<int> GetTargetUrlRankings(string targetUrl, ICollection<SeoSearchResult> searchResults)
         {
             var rankings = new List<int>();
@@ -42,75 +116,5 @@ namespace SeoSearcher.Services.SeoSearch
         }
 
 
-        //todo commoents + get async to work
-        public List<SeoSearchResult> GetSeoSearchRankings(Models.SeoSearch seoSearch)
-        {
-            var seoTargetRankings = new List<SeoSearchResult>();
-
-            var url = String.Format("https://www.google.com.au/search?num={0}&q={1}", seoSearch.MaxResults, seoSearch.KeyWords);
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(url);
-                //client.DefaultRequestHeaders.Accept.Clear();
-                //client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-                var response = client.GetAsync(url).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    var searchResultsHtml = response.Content.ReadAsStringAsync().Result;
-                    //var decoded = HttpUtility.HtmlDecode(searchResultsHtml);
-                    seoTargetRankings = ScrapeSearchResults(searchResultsHtml);
-                }
-            }
-
-            return seoTargetRankings;
-        }
-
-        //todo commoents + error checking
-        private List<SeoSearchResult> ScrapeSearchResults(string searchResultsHtml)
-        {
-            var seoSearchResultRankings = new List<SeoSearchResult>();
-
-            //var searchResultSeperator = new string[] {"<h3 class=\"r\">"};
-            var searchResultSeperator = new string[] { GoogleSearchResultIdentifier };
-            var splitResults = searchResultsHtml.Split(searchResultSeperator, StringSplitOptions.RemoveEmptyEntries)
-                .Skip(1).ToArray();   // Skip first element as not a search result
-
-           // Regex regex = new Regex("(<a href=\\\")(.*?)(<)");
-
-            var rank = 1;
-            for (var i = 0; i < splitResults.Count() + 1; i++) //start from 1 as 
-            {
-                try
-                {
-                    //var regexResults = Regex.Matches(splitResults[i], "<a href=\\\"/url[?]q=(.*?)&amp;");
-                    var regexResults = Regex.Matches(splitResults[i], GoogleResultUrlRegex);
-
-                    if (regexResults.Count > 0)
-                    {
-                        var searchResult = new SeoSearchResult
-                        {
-                            Rank = rank,
-                            FullUrl = regexResults[0].Groups[1].ToString()
-                            //todo domain??
-                        };
-                        seoSearchResultRankings.Add(searchResult);
-                        rank++;
-                    }
-                    else
-                    {
-                        //error with finding search result url
-                    }
-                }
-                catch (IndexOutOfRangeException e)
-                {
-                    //todo better error handling??
-                    break;  // do not continue if somehow hit out of bounds
-                }
-            }
-
-            return seoSearchResultRankings;
-        }
     }
 }

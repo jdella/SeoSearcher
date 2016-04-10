@@ -26,7 +26,6 @@ namespace SeoSearcher.Models
         public SeoSearch()
         {   //defaults
             DateRun = DateTime.Now;
-            MaxResults = 100;
         }
     }
 

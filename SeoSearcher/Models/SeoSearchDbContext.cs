@@ -9,7 +9,6 @@ namespace SeoSearcher.Models
     public class SeoSearchDbContext : DbContext
     {
         public DbSet<SeoSearch> SeoSearches { get; set; }
-        public DbSet<FavSearch> FavSearches { get; set; }
         public DbSet<SeoSearchResult> SeoSearchResults { get; set; }
     }
 }

@@ -5,9 +5,11 @@ using System.Web;
 
 namespace SeoSearcher.Models.ViewModels
 {
+    /// <summary>
+    /// View Model for Home Page
+    /// </summary>
     public class HomeViewModel
     {
-        public FavSearch FavSearch { get; set; }
         public SeoSearch NewSearch { get; set; }
     }
 }

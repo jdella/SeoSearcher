@@ -22,3 +22,8 @@ select,
 textarea {
     max-width: 280px;
 }
+
+a.no-link-decoration {
+    text-decoration: none !important;
+    color: inherit;
+}

@@ -3,10 +3,8 @@
 @using SeoSearcher.Models
 @model SeoSearcher.Models.ViewModels.SeoSearchResultsViewModel
 @{
-    ViewBag.Title = "SeoSearch";
+    ViewBag.Title = "Results";
 }
-@*<h2>@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>*@
 
 <style>
     .primay-color {
@@ -14,38 +12,9 @@
     }
 </style>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    <div class="pull-right">
-
-        <span class="pull-right">
-            @using (Html.BeginForm("SaveFavourite", "SeoSearch", Model.SeoSearch))
-            {
-                @Html.AntiForgeryToken()
-
-                @Html.HiddenFor(m => Model.SeoSearch.KeyWords)
-                @Html.HiddenFor(m => Model.SeoSearch.TargetUrl)
-                <input type="submit" value="Make Favourite" class="btn btn-warning btn-md" formaction="post" />
-            }
-        </span>
-        <span class="pull-right">&nbsp;</span>
-        <span class="pull-right">
-            @using (Html.BeginForm("SaveResults", "SeoSearch", Model.SeoSearch))
-            {
-                @Html.AntiForgeryToken()
-
-                @Html.HiddenFor(m => Model.SeoSearch.Results)
-                @*<input type="submit" value="Match" />*@
-                <input type="submit" value="Save Results" class="btn btn-primary btn-md btn " formaction="post" />
-
-            }
-        </span>
-
-    </div>
-}
-
-
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-sm pull-right ">
+    << Back
+</a>
 
 <h2>
     SEO keywords:
@@ -106,9 +75,3 @@ else
 
 }
 
-
-
-
-
-
-</div>

@@ -12,7 +12,7 @@ namespace SeoSearcher.Controllers
     {
         public BaseController()
         {
-            ViewData["FavSearch"] = new SeoSearchDataManager().GetFavSearch();
+            //initialisations if needed
         }
 
     }
